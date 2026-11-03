@@ -13,11 +13,9 @@
     --blue-light: #eaf6ff;
     --blue-soft: #f4faff;
     --red: #c83d4b;
-    --red-light: #fff0f1;
     --text: #26384a;
     --muted: #718096;
     --border: #e3ebf2;
-    --white: #ffffff;
 }
 
 * {
@@ -36,7 +34,7 @@ body {
     max-width: 1200px;
     margin: auto;
     padding: 30px;
-    background: var(--white);
+    background: #fff;
     border-radius: 18px;
     box-shadow: 0 5px 25px rgba(18, 52, 90, 0.07);
 }
@@ -479,58 +477,90 @@ body {
 "use strict";
 
 const YEAR = 2026;
-const MONTH = 10; // Novembre: gennaio = 0
+const MONTH = 10;
 
 /*
- * ASSEGNAZIONI UFFICIALI
+ * ASSEGNAZIONI BASE
  *
- * Questo calendario mantiene esattamente
- * gli incarichi forniti per novembre 2026.
- *
- * La rotazione di riferimento per i futuri
- * calendari è:
- * Lorenzo → Martin → Ivan → Peter → Rico → Joshua
- *
- * Se Lorenzo è assegnato di domenica,
- * scambia il turno con il giorno seguente.
+ * Questi sono i turni forniti per novembre 2026.
+ * La regola dello scambio domenicale viene applicata
+ * automaticamente dopo aver creato le assegnazioni.
  */
+
+const serviceNames = [
+    "Ivan",
+    "Peter",
+    "Reymark",
+    "Rico",
+    "Joshua",
+    "Martin",
+    "Fra Lorenzo"
+];
 
 const assignments = {
     3:  { servizio: "Ivan",        salmista: "Harold" },
     4:  { servizio: "Peter",       salmista: "Gerald" },
     5:  { servizio: "Reymark",     salmista: "Harold" },
-    6:  { servizio: "Joshua",      salmista: "Gerald" },
-    7:  { servizio: "Rico",        salmista: "Harold" },
+    6:  { servizio: "Rico",        salmista: "Gerald" },
+    7:  { servizio: "Joshua",      salmista: "Harold" },
     8:  { servizio: "Martin",      salmista: "Gerald" },
     9:  { servizio: "Ivan",        salmista: "Harold" },
     10: { servizio: "Peter",       salmista: "Gerald" },
     11: { servizio: "Reymark",     salmista: "Harold" },
-    12: { servizio: "Joshua",      salmista: "Gerald" },
-    13: { servizio: "Martin",      salmista: "Harold" },
-    14: { servizio: "Fra Lorenzo", salmista: "Gerald" },
-    15: { servizio: "Ivan",        salmista: "Harold" },
-    16: { servizio: "Peter",       salmista: "Gerald" },
-    17: { servizio: "Reymark",     salmista: "Harold" },
-    18: { servizio: "Joshua",      salmista: "Gerald" },
-    19: { servizio: "Martin",      salmista: "Harold" },
-    20: { servizio: "Fra Lorenzo", salmista: "Gerald" },
-    21: { servizio: "Ivan",        salmista: "Harold" },
-    22: { servizio: "Peter",       salmista: "Gerald" },
-    23: { servizio: "Reymark",     salmista: "Harold" },
-    24: { servizio: "Joshua",      salmista: "Gerald" },
-    25: { servizio: "Martin",      salmista: "Harold" },
-    26: { servizio: "Fra Lorenzo", salmista: "Gerald" },
-    27: { servizio: "Ivan",        salmista: "Harold" },
-    28: { servizio: "Peter",       salmista: "Gerald" },
-    29: { servizio: "Reymark",     salmista: "Harold" },
-    30: { servizio: "Joshua",      salmista: "Gerald" }
+    12: { servizio: "Rico",        salmista: "Gerald" },
+    13: { servizio: "Joshua",      salmista: "Harold" },
+    14: { servizio: "Martin",      salmista: "Gerald" },
+    15: { servizio: "Fra Lorenzo", salmista: "Harold" },
+    16: { servizio: "Ivan",        salmista: "Gerald" },
+    17: { servizio: "Peter",       salmista: "Harold" },
+    18: { servizio: "Reymark",     salmista: "Gerald" },
+    19: { servizio: "Rico",        salmista: "Harold" },
+    20: { servizio: "Joshua",      salmista: "Gerald" },
+    21: { servizio: "Martin",      salmista: "Harold" },
+    22: { servizio: "Fra Lorenzo", salmista: "Gerald" },
+    23: { servizio: "Ivan",        salmista: "Harold" },
+    24: { servizio: "Peter",       salmista: "Gerald" },
+    25: { servizio: "Reymark",     salmista: "Harold" },
+    26: { servizio: "Rico",        salmista: "Gerald" },
+    27: { servizio: "Joshua",      salmista: "Harold" },
+    28: { servizio: "Martin",      salmista: "Gerald" },
+    29: { servizio: "Fra Lorenzo", salmista: "Harold" },
+    30: { servizio: "Ivan",        salmista: "Gerald" }
 };
+
+/*
+ * REGOLA DELLA DOMENICA
+ *
+ * Se Fra Lorenzo è assegnato di domenica,
+ * scambia il suo turno con il servizio del giorno seguente.
+ *
+ * Lo scambio riguarda soltanto il servizio.
+ * Il salmista non cambia.
+ */
+
+const daysInMonth = new Date(YEAR, MONTH + 1, 0).getDate();
+
+for (let day = 3; day < daysInMonth; day++) {
+
+    const date = new Date(YEAR, MONTH, day);
+    const isSunday = date.getDay() === 0;
+
+    if (
+        isSunday &&
+        assignments[day] &&
+        assignments[day].servizio === "Fra Lorenzo" &&
+        assignments[day + 1]
+    ) {
+        const followingService = assignments[day + 1].servizio;
+
+        assignments[day].servizio = followingService;
+        assignments[day + 1].servizio = "Fra Lorenzo";
+    }
+}
 
 /* GENERAZIONE DEL CALENDARIO */
 
 const calendar = document.getElementById("calendar");
-
-const daysInMonth = new Date(YEAR, MONTH + 1, 0).getDate();
 const firstWeekday = new Date(YEAR, MONTH, 1).getDay();
 
 const today = new Date();
@@ -636,19 +666,9 @@ for (let day = 1; day <= daysInMonth; day++) {
 
 /* CONTEGGIO DEL SERVIZIO */
 
-const serviceOrder = [
-    "Ivan",
-    "Peter",
-    "Reymark",
-    "Joshua",
-    "Rico",
-    "Martin",
-    "Fra Lorenzo"
-];
-
 const serviceCounts = {};
 
-serviceOrder.forEach(name => {
+serviceNames.forEach(name => {
     serviceCounts[name] = 0;
 });
 
@@ -658,7 +678,7 @@ Object.values(assignments).forEach(entry => {
 
 const serviceContainer = document.getElementById("serviceCounts");
 
-serviceOrder.forEach(name => {
+serviceNames.forEach(name => {
 
     const row = document.createElement("div");
     row.className = "person-row";
@@ -678,14 +698,14 @@ serviceOrder.forEach(name => {
 
 /* CONTEGGIO DEI SALMISTI */
 
-const psalmistOrder = [
+const psalmistNames = [
     "Harold",
     "Gerald"
 ];
 
 const psalmistCounts = {};
 
-psalmistOrder.forEach(name => {
+psalmistNames.forEach(name => {
     psalmistCounts[name] = 0;
 });
 
@@ -695,7 +715,7 @@ Object.values(assignments).forEach(entry => {
 
 const psalmistContainer = document.getElementById("psalmistCounts");
 
-psalmistOrder.forEach(name => {
+psalmistNames.forEach(name => {
 
     const row = document.createElement("div");
     row.className = "person-row";
