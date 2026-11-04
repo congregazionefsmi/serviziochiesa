@@ -471,11 +471,11 @@
             <h2>Note e Occasioni</h2>
             <ul class="observance-list">
               <li><strong>1</strong> – Vincent – Martin</li>
-              <li><strong>8</strong> – XXXII Domenica del Tempo Ordinario | Ordin. CELLI Quinto (Guida e Salmista: Martin – Paul)</li>
+              <li><strong>8</strong> – XXXII Domenica del Tempo Ordinario | Ordin. CELLI Quinto (Guida e Antifonista: Martin – Paul)</li>
               <li><strong>9</strong> – Dedicazione Lateranense | Nasce GUERRA Rico Dave, Prof. MON JE Eduardo Andress</li>
-              <li><strong>15</strong> – XXXIII Domenica del Tempo Ordinario (Guida e Salmista: Paul – Reymark)</li>
-              <li><strong>22</strong> – Cristo Re dell’Universo | Ordin. INGIOSI Angelo (Guida e Salmista: Reymark – Dave)</li>
-              <li><strong>29</strong> – I Domenica di Avvento | Nasce CANESA Claudio (Guida e Salmista: Dave – Joshua)</li>
+              <li><strong>15</strong> – XXXIII Domenica del Tempo Ordinario (Guida e Antifonista: Paul – Reymark)</li>
+              <li><strong>22</strong> – Cristo Re dell’Universo | Ordin. INGIOSI Angelo (Guida e Antifonista: Reymark – Dave)</li>
+              <li><strong>29</strong> – I Domenica di Avvento | Nasce CANESA Claudio (Guida e Antifonista: Dave – Joshua)</li>
             </ul>
           </div>
 
@@ -484,7 +484,7 @@
             <ul class="observance-list" style="font-size: .72rem; color: #506278;">
               <li><strong>Servizio:</strong> Turno assegnato per il giorno</li>
               <li><strong>Salmista:</strong> Servizio del salmo</li>
-              <li><strong>Guida e Salmista:</strong> Turno specifico per le domeniche</li>
+              <li><strong>Guida e Antifonista:</strong> Turno specifico per le domeniche</li>
               <li><strong>Occasioni:</strong> Santi, memorie, compleanni e ricorrenze</li>
             </ul>
           </div>
@@ -506,28 +506,28 @@
       5:  { servizio: "Fra. Maria", salmista: "Christian" },
       6:  { servizio: "Reymark", salmista: "Christian" },
       7:  { servizio: "Dave", salmista: "Christian" },
-      8:  { servizio: "Joshua", salmista: "Christian", guidaSalmista: "Martin – Paul" },
+      8:  { servizio: "Joshua", salmista: "Christian", guidaAntifonista: "Martin – Paul" },
       9:  { servizio: "Martin", salmista: "Christian" },
       10: { servizio: "Vincent", salmista: "Christian" },
       11: { servizio: "Paul", salmista: "Christian" },
       12: { servizio: "Reymark", salmista: "Cris" },
       13: { servizio: "Dave", salmista: "Christian" },
       14: { servizio: "Joshua", salmista: "Cris" },
-      15: { servizio: "Martin", salmista: "Christian", guidaSalmista: "Paul – Reymark" },
+      15: { servizio: "Martin", salmista: "Christian", guidaAntifonista: "Paul – Reymark" },
       16: { servizio: "Vincent", salmista: "Cris" },
       17: { servizio: "Paul", salmista: "Christian" },
       18: { servizio: "Martin", salmista: "Cris" },
       19: { servizio: "Dave", salmista: "Christian" },
       20: { servizio: "Joshua", salmista: "Cris" },
       21: { servizio: "Fra. Maria", salmista: "Christian" },
-      22: { servizio: "Dave", salmista: "Cris", guidaSalmista: "Reymark – Dave" },
+      22: { servizio: "Dave", salmista: "Cris", guidaAntifonista: "Reymark – Dave" },
       23: { servizio: "Joshua", salmista: "Christian" },
       24: { servizio: "Paul", salmista: "Cris" },
       25: { servizio: "Reymark", salmista: "Christian" },
       26: { servizio: "Vincent", salmista: "Cris" },
       27: { servizio: "Fra. Maria", salmista: "Christian" },
       28: { servizio: "Martin", salmista: "Cris" },
-      29: { servizio: "Reymark", salmista: "Christian", guidaSalmista: "Dave – Joshua" },
+      29: { servizio: "Reymark", salmista: "Christian", guidaAntifonista: "Dave – Joshua" },
       30: { servizio: "Joshua", salmista: "Cris" }
     };
 
@@ -628,15 +628,15 @@
           container.appendChild(group);
         }
 
-        if (dayData.guidaSalmista) {
+        if (dayData.guidaAntifonista) {
           const group = document.createElement("div");
           group.className = "role-group";
           const lbl = document.createElement("span");
           lbl.className = "role-label";
-          lbl.textContent = "Guida & Salmista";
+          lbl.textContent = "Guida & Antifonista";
           const val = document.createElement("span");
           val.className = "role-names";
-          val.textContent = dayData.guidaSalmista;
+          val.textContent = dayData.guidaAntifonista;
           group.append(lbl, val);
           container.appendChild(group);
         }
